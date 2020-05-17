@@ -27,18 +27,18 @@ class Set
 	int size;
 	Node* root;
 	
-	Node* insert(Node*& node, T& val);
-	Node* erase(Node* node, T& val);
-	bool isPresent(Node* node, T& val) const;
-	int noElem(Node*) const;
-	Node* getMin(Node* node);
+	Node* insert(Node*& node, T& val);						//functie recursiva pentru inserare
+	Node* erase(Node* node, T& val);						//functie recursiva pentru stergere
+	bool isPresent(Node* node, T& val) const;				//functie recurisiva pentruu a cauta o anumita valoare
+	int noElem(Node*) const;								//functie recursiva care calculeaza nr de elemente
+	Node* getMin(Node* node) const;							//returneaza valoarea minima din AVL
 
-	Node* rr_rotate(Node*&);
-	Node* rl_rotate(Node*&);
-	Node* lr_rotate(Node*&);
-	Node* ll_rotate(Node*&);
+	Node* rr_rotate(Node*&);								//rotatia right-right
+	Node* rl_rotate(Node*&);								//rotatia right-left
+	Node* lr_rotate(Node*&);								//rotatie left-right
+	Node* ll_rotate(Node*&);								//rotatie left-left
 
-	void inorder(std::ostream&, Node*) const;
+	void inorder(std::ostream&, Node*) const;				
 	void preorder(std::ostream&, Node*) const;
 
 public:
@@ -56,12 +56,14 @@ public:
 	Set& operator=(const Set&);
 };
 
+//constructor cu un parametru pentru nod
 template<class T, class F>
 inline Set<T, F>::Node::Node(T valoare) : val(valoare), left_son(NULL), right_son(NULL), height(0)
 {
 
 }
 
+//calculez inaltimea fiecarui subarbore
 template<class T, class F>
 inline int Set<T, F>::Node::getHeight() const
 {
@@ -78,6 +80,7 @@ inline int Set<T, F>::Node::getHeight() const
 		return right_side + 1;
 }
 
+//pentru a vedea daca arborele este balansat sau nu, trebuie sa vedem care este diferenta dintre inaltimea subarborelui stand si inaltimea subarborelui drept
 template<class T, class F>
 inline int Set<T, F>::Node::getBalance() const
 {
@@ -90,33 +93,38 @@ inline int Set<T, F>::Node::getBalance() const
 	return left_side - right_side;
 }
 
+//constructor pentru Set fara parametri
 template<class T, class F>
 inline Set<T, F>::Set() : size(0), root(NULL)
 {
 
 }
 
+//destructor
 template<class T, class F>
 inline Set<T, F>::~Set()
 {
 	if (root == NULL)
 		return;
+
+	//retinem nodurile intr-o coada pentru a ne fi mai usor sa le stergem
 	std::queue<Node*>Q;
 	Q.push(root);
 	while (!Q.empty())
 	{
 		Node* curent = Q.front();
 		Q.pop();
-		if (curent->left_son)
+		if (curent->left_son)				//adaugam in coada fiul stang al nodului curent
 			Q.push(curent->left_son);
 		if (curent->right_son)
-			Q.push(curent->right_son);
+			Q.push(curent->right_son);		//adaugam in coada fiul drept al nodului curent
 		delete curent;
 	}
 	root = NULL;
 	size = 0;
 }
 
+//copy constructor
 template<class T, class F>
 inline Set<T, F>::Set(const Set& copie) : size(copie.size), compare(copie.compare)
 {
@@ -140,7 +148,7 @@ inline Set<T, F>::Set(const Set& copie) : size(copie.size), compare(copie.compar
 template<class T, class F>
 inline void Set<T, F>::insert(T val)
 {
-	root = insert(root, val);
+		root = insert(root, val);
 }
 
 template<class T, class F>
@@ -166,7 +174,6 @@ inline int Set<T, F>::noElem() const
 		nr = noElem(root);
 	return nr;
 }
-
 
 template<class T, class F>
 inline Set<T,F>& Set<T, F>::operator=(const Set& copie)
@@ -200,16 +207,16 @@ typename inline Set<T, F>::Node* Set<T, F>::insert(Node*& node, T& val)
 		return node;
 	}
 	
-	if (this->compare(node->val, val) == 0)
+	if (this->compare(node->val, val) == 0)				//daca nodul deja exista, atunci nu il mai inseram
 		return node;
 
-	if (this->compare(node->val, val) == 1)
+	if (this->compare(node->val, val) == 1)				//daca valoarea este mai mica decat valoarea nodului curent, atunci vom merge pe ramura stanga	
 	{
-		node->left_son = insert(node->left_son, val);
+		node->left_son = insert(node->left_son, val);	//mergem pe ramura stanga
 		
-		if (node->getBalance() == 2)
+		if (node->getBalance() == 2)					
 		{
-			if (this->compare(node->left_son->val, val) == 1)
+			if (this->compare(node->left_son->val, val) == 1)							//daca avem o structura de tipul st
 				node = ll_rotate(node);
 			else if (this->compare(node->left_son->val, val) == -1)
 				node = lr_rotate(node);
@@ -311,7 +318,7 @@ inline int Set<T, F>::noElem(Node* node) const
 
 //obtin valoarea minima din AVL, mergand pe ramura stanga
 template<class T, class F>
-typename inline Set<T, F>::Node* Set<T, F>::getMin(Node* node)
+typename inline Set<T, F>::Node* Set<T, F>::getMin(Node* node) const
 {
 	if (node == NULL)
 		return NULL;

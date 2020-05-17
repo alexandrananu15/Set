@@ -12,6 +12,7 @@ void testSet()
     set1.insert("luceafarul");
     set1.insert("zoe");
     set1.insert("eva");
+    set1.insert("otilia");
     std::cout << set1 << std::endl << std::endl;
 
     Set<std::string>set2(set1);                         //Test set2 - copy constructor
