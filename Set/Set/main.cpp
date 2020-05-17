@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Set.h"
-#include "Comparator.h"
 #include <string>
 #include <cassert>
 
@@ -83,12 +82,9 @@ void testSet()
 
 }
 
-
-
 int main()
 {
     testSet();
     std::cout << "Toate testele au trecut! :)";
     std::cout << std::endl;
 }
-
