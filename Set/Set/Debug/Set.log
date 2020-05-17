@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Users\alexa\Desktop\Set_AVL\Set\Set\Set.h(12): warning C4348: 'Set': redefinition of default parameter: parameter 2
+C:\Users\alexa\Desktop\Set_AVL\Set\Set\Set.h(14): message : see declaration of 'Set'
+  Set.vcxproj -> C:\Users\alexa\Desktop\Set_AVL\Set\Debug\Set.exe
