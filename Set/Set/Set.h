@@ -27,9 +27,9 @@ class Set
 	int size;
 	Node* root;
 	
-	Node* insert(Node*& node, T& val);						//functie recursiva pentru inserare
-	Node* erase(Node* node, T& val);						//functie recursiva pentru stergere
-	bool isPresent(Node* node, T& val) const;				//functie recurisiva pentruu a cauta o anumita valoare
+	Node* insert(Node*&, T&);						//functie recursiva pentru inserare
+	Node* erase(Node*, T&);						//functie recursiva pentru stergere
+	bool isPresent(Node*, T&) const;				//functie recurisiva pentruu a cauta o anumita valoare
 	int noElem(Node*) const;								//functie recursiva care calculeaza nr de elemente
 	Node* getMin(Node* node) const;							//returneaza valoarea minima din AVL
 
@@ -45,9 +45,9 @@ public:
 	Set();																//constructor fara parametri
 	~Set();																//destructor
 	Set(const Set&);													
-	void insert(T );
-	void erase(T );
-	bool isPresent(T ) const;
+	void insert(T);
+	void erase(T);
+	bool isPresent(T) const;
 	int noElem() const;
 
 	template <typename U, typename F>
