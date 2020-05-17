@@ -210,34 +210,34 @@ typename inline Set<T, F>::Node* Set<T, F>::insert(Node*& node, T& val)
 	if (this->compare(node->val, val) == 0)				//daca nodul deja exista, atunci nu il mai inseram
 		return node;
 
-	if (this->compare(node->val, val) == 1)				//daca valoarea este mai mica decat valoarea nodului curent, atunci vom merge pe ramura stanga	
+	if (this->compare(node->val, val) == 1)				//daca valoarea de inserat este mai mica decat valoarea nodului curent, atunci vom merge pe ramura stanga	
 	{
 		node->left_son = insert(node->left_son, val);	//mergem pe ramura stanga
 		
-		if (node->getBalance() == 2)					
+		if (node->getBalance() == 2)					//daca este imbalansat, atunci este mai greu pe partea stanga (+2)	
 		{
-			if (this->compare(node->left_son->val, val) == 1)							//daca avem o structura de tipul st
+			if (this->compare(node->left_son->val, val) == 1)							//daca avem o structura de tipul stanga-stanga
 				node = ll_rotate(node);
-			else if (this->compare(node->left_son->val, val) == -1)
+			else if (this->compare(node->left_son->val, val) == -1)						//daca avem o strcutura de tipul stanga-dreapta
 				node = lr_rotate(node);
 		}
 
 	}
-	else if (this->compare(node->val, val) == -1)
+	else if (this->compare(node->val, val) == -1)		//daca valoarea de inserat este mai mare decat valoarea nodului curent, atunci vom merge pe ramura dreapta
 	{
-		node->right_son = insert(node->right_son, val);
+		node->right_son = insert(node->right_son, val);		//inseram pe ramura dreapta
 		
-		if (node->getBalance() == -2)
+		if (node->getBalance() == -2)					//daca este imbalansat, atunci este mai greu pe partea dreapta (-2)
 		{
-			if (this->compare(node->right_son->val, val) == -1)
+			if (this->compare(node->right_son->val, val) == -1)		//daca avem o structura de tip dreapta-dreapta
 				node = rr_rotate(node);
-			else if (this->compare(node->right_son->val, val) == 1)
+			else if (this->compare(node->right_son->val, val) == 1)		//daca avem o structura de tip nod la dreapta si apoi la stanga
 				node = rl_rotate(node);
 		}
 
 	}
 
-	node->height = node->getHeight();
+	node->height = node->getHeight();			//este updatata inaltimea nodului dupa rotatie
 	return node;
 }
 
@@ -248,49 +248,49 @@ typename inline Set<T, F>::Node* Set<T, F>::erase(Node* node, T& val)
 		return NULL;
 
 	if (compare(node->val, val) == 0)
-		//are 2 copii
-		if (node->left_son != NULL && node->right_son != NULL) 
+	
+		if (node->left_son != NULL && node->right_son != NULL)		//cazul pentru 2 copii
 		{
-			Node* t = getMin(node->right_son);
-			node->val = t->val;
-			node->right_son = erase(node->right_son, t->val);
+			Node* t = getMin(node->right_son);						//obtinem succesorul in inordine
+			node->val = t->val;										//copiem informatia din nodul succesor in nodul curent
+			node->right_son = erase(node->right_son, t->val);		//stergem succesorul in inordine
 		}
-		// 1 or 0 children
-		else 
+	
+		else														//cazul pentru 0 sau 1 copii
 		{
-			Node* u = node;
+			Node* u = node;											
 			if (node->left_son)
 				node = node->left_son;
 			else
 				node = node->right_son;
 			delete u;
 		}
-	else if (compare(node->val, val) == 1)
+	else if (compare(node->val, val) == 1)							//mergem pe subarborele stang
 		node->left_son = erase(node->left_son, val);
 	else if (compare(node->val, val) == -1)
-		node->right_son = erase(node->right_son, val);
+		node->right_son = erase(node->right_son, val);				//mergem pe subarborele drept
 
 	if (node == NULL)
 		return NULL;
 	if (node->getBalance() == 2) 
 	{
 		if (node->left_son->left_son == NULL)
-			node = lr_rotate(node);
+			node = lr_rotate(node);									//rotatie stanga-dreapta
 		else
-			node = ll_rotate(node);
+			node = ll_rotate(node);									//rotatie stanga-stanga
 	}
 	else if (node->getBalance() == -2) 
 	{
 		if (node->right_son->right_son == NULL)
-			node = rl_rotate(node);
+			node = rl_rotate(node);									//rotatie dreapta-stanga
 		else
-			node = rr_rotate(node);
+			node = rr_rotate(node);									//rotatie dreapta-dreapta
 	}
 
 	return node;
 }
 
-//urmaresc 
+//este o anumita valoare prezenta in arbore?
 template<class T, class F>
 inline bool Set<T, F>::isPresent(Node* node, T& val) const
 {

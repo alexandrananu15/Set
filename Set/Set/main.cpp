@@ -42,6 +42,45 @@ void testSet()
     assert(set3.noElem() == 5); 
 
     std::cout << std::endl;
+
+    Set<int>set4;                               //Test set4
+    set4.insert(11);
+    set4.insert(22);
+    set4.insert(33);
+    set4.insert(44);
+    std::cout << set4 << std::endl << std::endl;
+
+    Set<int>set5(set4);                         //Test set5 - copy constructor
+    std::cout << set5 << std::endl << std::endl;
+
+    Set<int>set6;                               //Test set6 = set5 - operatorul egal
+    set6 = set5;
+    std::cout << set6 << std::endl << std::endl;
+
+    assert(set5.isPresent(11));
+    assert(set5.isPresent(44));
+
+    //tinem cont ca pe cazul cu int-uri, sunt considerate egale numerele cu aceeasi paritate
+    
+    //astfel, daca vrem sa il stergem pe 11, putem la fel de bine sa dam ca valoare 101, ptr ca au aceeasi paritate
+    set4.erase(101);
+    std::cout << set4 << std::endl;
+
+    try
+    {
+        set4.erase(33);
+        assert(false);
+    }
+    catch (const char* e)
+    {
+        if (e != "Nu exista valoarea in set")
+            assert(false);
+    }
+
+    assert(set6.noElem() == 2);
+
+    std::cout << std::endl;
+
 }
 
 
