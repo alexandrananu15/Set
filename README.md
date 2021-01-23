@@ -1,4 +1,4 @@
-## Set 
+## Set 🔨
 #### Set<T, F>
 Am creat un Set cu concepte de POO. Pentru a obtine un timp cat mai bun, am folosit structura unui AVL => complexitate O(log n). 
 ### Clasa Set ofera: 
